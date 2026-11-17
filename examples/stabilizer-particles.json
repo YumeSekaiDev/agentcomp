@@ -1,0 +1,83 @@
+{
+  "name": "Stabilizer + Particles 2D",
+  "background": "#050508",
+  "width": 1280,
+  "height": 720,
+  "frameRate": 12,
+  "duration": 2,
+  "output": "stabilizer-particles.mp4",
+  "layers": [
+    {
+      "type": "solid",
+      "name": "Plate",
+      "color": "#050508",
+      "width": 1280,
+      "height": 720,
+      "position": [640, 360]
+    },
+    {
+      "type": "footage",
+      "name": "Shaky Plate",
+      "path": "examples/media/shake/f_000.png",
+      "sequence": true,
+      "footageFrameRate": 12,
+      "position": [640, 360],
+      "scale": 350,
+      "effect": {
+        "id": "stabilizer",
+        "smoothness": 80,
+        "strength": 70,
+        "method": "subspace",
+        "analyze": true,
+        "params": {
+          "stabilization/result": 0,
+          "borders/framing": 2
+        }
+      }
+    },
+    {
+      "type": "particle2d",
+      "name": "Sparks 2D",
+      "width": 1280,
+      "height": 720,
+      "position": [640, 360],
+      "birthRate": 5,
+      "life": 1.4,
+      "velocity": 3.5,
+      "gravity": 1.2,
+      "direction": -90,
+      "color": "#fde047",
+      "deathColor": "#f97316",
+      "size": 0.8,
+      "deathSize": 0.15,
+      "producer": [0.5, 0.85, 0],
+      "particle": {
+        "transferMode": "add",
+        "maxOpacity": 90,
+        "emitter": "2d"
+      },
+      "keys": {
+        "effects": {
+          "birthRate": [[0, 2], [1, 6], [1.8, 2]]
+        }
+      }
+    },
+    {
+      "type": "text",
+      "name": "Label",
+      "text": "Warp Stabilizer + Particles 2D",
+      "size": 42,
+      "fill": "#f8fafc",
+      "position": [640, 80],
+      "keys": {
+        "opacity": [[0, 0], [0.3, 100], [1.7, 100], [2, 0]]
+      },
+      "effect": {
+        "id": "glow",
+        "radius": 16,
+        "intensity": 1.1,
+        "threshold": 40
+      }
+    }
+  ]
+}

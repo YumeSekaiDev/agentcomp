@@ -1,0 +1,329 @@
+{
+  "name": "Paradise Night Approach",
+  "background": "#02060e",
+  "width": 1920,
+  "height": 1080,
+  "frameRate": 30,
+  "duration": 12,
+  "output": "paradise-3d-cinema.mp4",
+  "layers": [
+    {
+      "type": "solid",
+      "name": "Night Void",
+      "color": "#02060e",
+      "width": 1920,
+      "height": 1080,
+      "position": [960, 540]
+    },
+    {
+      "type": "shape",
+      "name": "Horizon Wash",
+      "kind": "ellipse",
+      "size": [1800, 420],
+      "fill": "#0a2340",
+      "position": [960, 820, 120],
+      "threeD": true,
+      "opacity": 40,
+      "keys": {
+        "opacity": [[0, 22], [3, 40], [11, 40], [12, 28]],
+        "scale": [[0, 92], [12, 108]]
+      },
+      "effect": {
+        "id": "blur",
+        "blurriness": 40
+      }
+    },
+    {
+      "type": "shape",
+      "name": "Ring Far",
+      "kind": "ellipse",
+      "size": [760, 760],
+      "fill": "#02060e",
+      "stroke": "#5eead4",
+      "strokeWidth": 5,
+      "position": [960, 520, -320],
+      "threeD": true,
+      "opacity": 70,
+      "keys": {
+        "rotation": [[0, -18], [12, 28]],
+        "position": [
+          [0, [880, 560, -360]],
+          [6, [940, 500, -300]],
+          [12, [990, 470, -240]]
+        ],
+        "opacity": [[0, 0], [1.4, 70], [11, 70], [12, 45]]
+      },
+      "effect": {
+        "id": "glow",
+        "radius": 10,
+        "intensity": 0.9,
+        "threshold": 40
+      }
+    },
+    {
+      "type": "shape",
+      "name": "Ring Mid",
+      "kind": "ellipse",
+      "size": [1100, 300],
+      "fill": "#02060e",
+      "stroke": "#67e8f9",
+      "strokeWidth": 4,
+      "position": [960, 540, 40],
+      "threeD": true,
+      "opacity": 65,
+      "keys": {
+        "rotation": [[0, 12], [12, -22]],
+        "position": [
+          [0, [1040, 580, 20]],
+          [6, [980, 530, 60]],
+          [12, [930, 500, 90]]
+        ],
+        "opacity": [[0, 0], [1.8, 65], [11, 65], [12, 40]]
+      },
+      "effect": {
+        "id": "glow",
+        "radius": 8,
+        "intensity": 0.85,
+        "threshold": 42
+      }
+    },
+    {
+      "type": "shape",
+      "name": "Ring Near",
+      "kind": "ellipse",
+      "size": [460, 460],
+      "fill": "#02060e",
+      "stroke": "#a5f3fc",
+      "strokeWidth": 4,
+      "position": [960, 500, 280],
+      "threeD": true,
+      "opacity": 60,
+      "keys": {
+        "rotation": [[0, -8], [12, 36]],
+        "position": [
+          [0, [760, 620, 220]],
+          [6, [840, 540, 280]],
+          [12, [900, 490, 320]]
+        ],
+        "scale": [[0, 88], [12, 104]],
+        "opacity": [[0, 0], [2.2, 60], [11, 60], [12, 35]]
+      },
+      "effect": {
+        "id": "glow",
+        "radius": 9,
+        "intensity": 0.95,
+        "threshold": 38
+      }
+    },
+    {
+      "type": "shape",
+      "name": "Accent Bar",
+      "kind": "ellipse",
+      "size": [360, 6],
+      "fill": "#99f6e4",
+      "position": [960, 560, 20],
+      "threeD": true,
+      "keys": {
+        "scale": [[2.4, 12], [4.2, 110], [5.0, 100], [12, 104]],
+        "opacity": [[2.4, 0], [4.0, 90], [10.5, 90], [12, 40]],
+        "position": [
+          [2.4, [960, 580, 0]],
+          [4.2, [960, 560, 20]],
+          [12, [960, 540, 40]]
+        ]
+      },
+      "effect": {
+        "id": "glow",
+        "radius": 20,
+        "intensity": 1.25,
+        "threshold": 24
+      }
+    },
+    {
+      "type": "particle",
+      "name": "Volumetric Stardust",
+      "width": 1920,
+      "height": 1080,
+      "position": [960, 540],
+      "birthRate": 1.05,
+      "life": 7.0,
+      "velocity": 0.22,
+      "gravity": 0.06,
+      "color": "#e8fbff",
+      "deathColor": "#67e8f9",
+      "size": 0.18,
+      "deathSize": 0.05,
+      "maxOpacity": 58,
+      "producer": [0, 0.04, 0],
+      "particle": {
+        "transferMode": "add",
+        "maxOpacity": 58
+      },
+      "effect": {
+        "id": "particles3d",
+        "params": {
+          "physics/animation": 8,
+          "producer/radiusX": 1.2,
+          "producer/radiusY": 0.75,
+          "producer/radiusZ": 0.9,
+          "physics/resistance": 0.4,
+          "particle/sizeVariation": 40,
+          "particle/particleType": 2,
+          "extras/effectCamera/distance": 3.2
+        },
+        "keys": {
+          "birthRate": [[0, 0.7], [3.5, 1.15], [9, 1.05], [11.5, 0.55]]
+        }
+      }
+    },
+    {
+      "type": "text",
+      "name": "Word Escape",
+      "text": "ESCAPE",
+      "size": 108,
+      "fill": "#ffffff",
+      "position": [960, 390, -160],
+      "threeD": true,
+      "keys": {
+        "opacity": [[0, 0], [1.6, 100], [11.2, 100], [12, 70]],
+        "position": [
+          [0, [960, 430, -220]],
+          [3.5, [960, 400, -180]],
+          [12, [960, 380, -120]]
+        ],
+        "scale": [[0, 92], [3.5, 100], [12, 102]]
+      },
+      "effect": {
+        "id": "glow",
+        "radius": 34,
+        "intensity": 1.35,
+        "threshold": 30
+      }
+    },
+    {
+      "type": "text",
+      "name": "Word To",
+      "text": "TO",
+      "size": 46,
+      "fill": "#a5f3fc",
+      "position": [960, 500, 10],
+      "threeD": true,
+      "keys": {
+        "opacity": [[0.8, 0], [2.4, 100], [11.2, 100], [12, 65]],
+        "position": [
+          [0.8, [960, 530, -20]],
+          [4.0, [960, 505, 10]],
+          [12, [960, 490, 30]]
+        ]
+      },
+      "effect": {
+        "id": "glow",
+        "radius": 18,
+        "intensity": 1.15,
+        "threshold": 36
+      }
+    },
+    {
+      "type": "text",
+      "name": "Word Paradise",
+      "text": "PARADISE",
+      "size": 118,
+      "fill": "#ecfeff",
+      "position": [960, 620, 180],
+      "threeD": true,
+      "keys": {
+        "opacity": [[1.0, 0], [2.6, 100], [11.2, 100], [12, 75]],
+        "position": [
+          [1.0, [960, 670, 140]],
+          [4.5, [960, 625, 180]],
+          [12, [960, 600, 210]]
+        ],
+        "scale": [[1.0, 90], [4.5, 100], [12, 103]]
+      },
+      "effect": {
+        "id": "glow",
+        "radius": 38,
+        "intensity": 1.4,
+        "threshold": 28
+      }
+    },
+    {
+      "type": "text",
+      "name": "Tagline",
+      "text": "Your Dream Vacation Awaits",
+      "size": 34,
+      "fill": "#67e8f9",
+      "position": [960, 740, 240],
+      "threeD": true,
+      "keys": {
+        "opacity": [[6.5, 0], [8.2, 100], [11.0, 100], [12, 40]],
+        "position": [
+          [6.5, [960, 780, 220]],
+          [8.2, [960, 745, 240]],
+          [12, [960, 730, 250]]
+        ]
+      },
+      "effect": {
+        "id": "glow",
+        "radius": 14,
+        "intensity": 1.05,
+        "threshold": 40
+      }
+    },
+    {
+      "type": "light",
+      "name": "Key Warm",
+      "lightKind": "Point",
+      "color": "#ffe4c8",
+      "intensity": 125,
+      "position": [620, 280, -700],
+      "threeD": true,
+      "keys": {
+        "position": [
+          [0, [520, 240, -900]],
+          [12, [700, 320, -500]]
+        ]
+      }
+    },
+    {
+      "type": "light",
+      "name": "Rim Cyan",
+      "lightKind": "Point",
+      "color": "#7dd3fc",
+      "intensity": 95,
+      "position": [1280, 720, 400],
+      "threeD": true,
+      "keys": {
+        "position": [
+          [0, [1400, 800, 500]],
+          [12, [1180, 640, 280]]
+        ]
+      }
+    },
+    {
+      "type": "light",
+      "name": "Ambient Soft",
+      "lightKind": "Ambient",
+      "color": "#1e3a5f",
+      "intensity": 35,
+      "position": [960, 540, 0],
+      "threeD": true
+    },
+    {
+      "type": "camera",
+      "name": "Hero Cam",
+      "cameraType": "twoNode",
+      "preset": "50mm",
+      "position": [780, 640, -2800],
+      "poi": [960, 520, 40],
+      "move": [
+        [0, [780, 640, -2800]],
+        [2.5, [820, 600, -2450]],
+        [5.0, [1020, 540, -2050]],
+        [7.5, [1000, 510, -1750]],
+        [10.0, [970, 500, -1500]],
+        [12.0, [960, 495, -1320]]
+      ]
+    }
+  ]
+}

@@ -1,0 +1,157 @@
+{
+  "name": "Escape to Paradise Reference",
+  "background": "#000516",
+  "width": 1920,
+  "height": 1080,
+  "frameRate": 30,
+  "duration": 8,
+  "output": "reference-copy.mp4",
+  "layers": [
+    {
+      "type": "solid",
+      "name": "Night Navy",
+      "color": "#000516",
+      "width": 1920,
+      "height": 1080,
+      "position": [960, 540]
+    },
+    {
+      "type": "shape",
+      "name": "Center Wash",
+      "kind": "ellipse",
+      "size": [900, 560],
+      "fill": "#01122b",
+      "position": [960, 540],
+      "opacity": 45,
+      "keys": {
+        "opacity": [[0, 28], [2, 45], [7, 45], [8, 32]],
+        "scale": [[0, 97], [8, 103]]
+      },
+      "effect": {
+        "id": "blur",
+        "blurriness": 56
+      }
+    },
+    {
+      "type": "shape",
+      "name": "Halo Ring",
+      "kind": "ellipse",
+      "size": [640, 640],
+      "fill": "#000516",
+      "stroke": "#6ee7de",
+      "strokeWidth": 3,
+      "position": [960, 535],
+      "opacity": 72,
+      "keys": {
+        "scale": [[0, 92], [2.0, 100.5], [2.6, 100], [8, 101.5]],
+        "opacity": [[0, 0], [1.0, 72], [7.2, 72], [8, 50]],
+        "rotation": [[0, -3], [8, 4]]
+      },
+      "effect": {
+        "id": "glow",
+        "radius": 11,
+        "intensity": 1.05,
+        "threshold": 36
+      }
+    },
+    {
+      "type": "particle2d",
+      "name": "Soft Stardust",
+      "width": 1920,
+      "height": 1080,
+      "position": [960, 540],
+      "birthRate": 1.1,
+      "life": 5.8,
+      "velocity": 0.28,
+      "gravity": 0.1,
+      "direction": 180,
+      "color": "#eefcff",
+      "deathColor": "#5eead4",
+      "size": 0.55,
+      "deathSize": 0.14,
+      "maxOpacity": 55,
+      "producer": [0.5, 0.06],
+      "particle": {
+        "transferMode": "add",
+        "maxOpacity": 55
+      },
+      "effect": {
+        "id": "particles2d",
+        "params": {
+          "physics/animation": 1,
+          "producer/radiusX": 820,
+          "producer/radiusY": 28,
+          "particle/sizeVariation": 40,
+          "physics/resistance": 0.28,
+          "particle/particleType": 2
+        },
+        "keys": {
+          "birthRate": [[0, 0.75], [2, 1.2], [6.5, 1.05], [7.8, 0.55]]
+        }
+      }
+    },
+    {
+      "type": "particle",
+      "name": "Ambient Motes",
+      "width": 1920,
+      "height": 1080,
+      "position": [960, 540],
+      "birthRate": 0.55,
+      "life": 6.5,
+      "velocity": 0.15,
+      "gravity": 0.03,
+      "color": "#f5feff",
+      "deathColor": "#67e8f9",
+      "size": 0.14,
+      "deathSize": 0.035,
+      "maxOpacity": 42,
+      "producer": [0, 0, 0],
+      "particle": {
+        "transferMode": "add",
+        "maxOpacity": 42
+      },
+      "effect": {
+        "id": "particles3d",
+        "params": {
+          "physics/animation": 8,
+          "producer/radiusX": 0.7,
+          "producer/radiusY": 0.45,
+          "producer/radiusZ": 0.35,
+          "physics/resistance": 0.5,
+          "particle/sizeVariation": 30,
+          "particle/particleType": 2
+        }
+      }
+    },
+    {
+      "type": "text",
+      "name": "Title",
+      "text": "ESCAPE TO PARADISE",
+      "size": 82,
+      "fill": "#ffffff",
+      "position": [960, 535],
+      "keys": {
+        "opacity": [[0, 0], [1.2, 100], [7.2, 100], [8, 75]],
+        "scale": [[0, 96], [1.6, 100], [8, 100.5]]
+      },
+      "effect": {
+        "id": "glow",
+        "radius": 24,
+        "intensity": 1.2,
+        "threshold": 34
+      }
+    },
+    {
+      "type": "camera",
+      "name": "Still Push",
+      "cameraType": "twoNode",
+      "preset": "50mm",
+      "position": [960, 540, -1550],
+      "poi": [960, 535, 0],
+      "move": [
+        [0, [960, 540, -1600]],
+        [8, [960, 536, -1480]]
+      ]
+    }
+  ]
+}

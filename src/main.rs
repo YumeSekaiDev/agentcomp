@@ -90,8 +90,8 @@ fn usage() -> String {
 USAGE:
   agent-compositor [OPTIONS] [INPUT.json] [OUTPUT.mp4]
   agent-compositor --prompt "Hello | Subtitle" -o out.mp4
+  agent-compositor --input examples/stabilizer-particles.json -o stabilizer-particles.mp4
   agent-compositor --input examples/next-test.json -o next-test.mp4
-  agent-compositor --input examples/full-test.json -o full-test.mp4
 
 OPTIONS:
   -p, --prompt TEXT   Title (optional "Title | Subtitle"); builds a title card
@@ -100,16 +100,16 @@ OPTIONS:
   -o, --output PATH   Output MP4 path (default: test.mp4, or scene.output)
   -h, --help          Show this help
 
-LAYER TYPES: text | solid | shape | footage | particle | camera | light | null
+LAYER TYPES: text | solid | shape | footage | particle | particle2d | camera | light | null
 
-SHAPE: fill, stroke, strokeWidth  (kind: rect|ellipse|…)
-CAMERA: position + move [[t,[x,y,z]],…] or keys.position
-KEYS: position, scale, rotation, opacity, effects.<param>
-EFFECTS: glow, blur, chroma, keylight, hue, brightness, particles3d
+PARTICLE 3D:  { "type": "particle", ... }
+PARTICLE 2D:  { "type": "particle2d", "direction": -90, "producer": [0.5, 0.8], ... }
+              or { "type": "particle", "emitter": "2d", ... }
 
-PARTICLE:
-  { "type": "particle", "birthRate": 4, "life": 2, "velocity": 2.5,
-    "gravity": 0.8, "color": "#ffcc33", "size": 0.4 }
+WARP STABILIZER (on footage):
+  "effect": { "id": "stabilizer", "smoothness": 80, "strength": 70, "analyze": true }
+
+EFFECTS: glow, blur, chroma, keylight, particles3d, particles2d, stabilizer
 
 See README.md for the full scene schema."##
         .to_string()

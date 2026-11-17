@@ -1,0 +1,231 @@
+{
+  "name": "The keyword map",
+  "background": "#070a12",
+  "width": 1920,
+  "height": 1080,
+  "frameRate": 30,
+  "duration": 7,
+  "output": "keyword-map.mp4",
+  "layers": [
+    {
+      "type": "solid",
+      "name": "Backdrop",
+      "color": "#070a12",
+      "width": 1920,
+      "height": 1080,
+      "position": [960, 540]
+    },
+    {
+      "type": "shape",
+      "name": "Card Soft Edge",
+      "kind": "rounded",
+      "size": [1040, 540],
+      "fill": "#0a1628",
+      "position": [960, 500],
+      "opacity": 55,
+      "keys": {
+        "opacity": [[0, 0], [0.8, 55], [6.4, 55], [7, 30]],
+        "scale": [[0, 96], [1.2, 100]]
+      },
+      "effect": {
+        "id": "blur",
+        "blurriness": 18
+      }
+    },
+    {
+      "type": "shape",
+      "name": "Card",
+      "kind": "rounded",
+      "size": [980, 500],
+      "fill": "#0c1526",
+      "stroke": "#1e2d45",
+      "strokeWidth": 1,
+      "position": [960, 500],
+      "keys": {
+        "opacity": [[0, 0], [0.7, 100], [6.4, 100], [7, 70]],
+        "scale": [[0, 97], [1.1, 100]]
+      }
+    },
+    {
+      "type": "shape",
+      "name": "Placeholder",
+      "kind": "rounded",
+      "size": [88, 88],
+      "fill": "#152238",
+      "stroke": "#243552",
+      "strokeWidth": 1,
+      "position": [1330, 360],
+      "keys": {
+        "opacity": [[0.6, 0], [1.3, 100], [6.4, 100], [7, 60]]
+      }
+    },
+    {
+      "type": "text",
+      "name": "Title The",
+      "text": "The",
+      "size": 44,
+      "fill": "#f8fafc",
+      "position": [780, 118],
+      "keys": {
+        "opacity": [[0, 0], [0.6, 100], [6.5, 100], [7, 50]]
+      }
+    },
+    {
+      "type": "text",
+      "name": "Title Keyword",
+      "text": "keyword",
+      "size": 44,
+      "fill": "#4ade80",
+      "position": [960, 118],
+      "keys": {
+        "opacity": [[0.15, 0], [0.75, 100], [6.5, 100], [7, 50]]
+      },
+      "effect": {
+        "id": "glow",
+        "radius": 12,
+        "intensity": 0.85,
+        "threshold": 40
+      }
+    },
+    {
+      "type": "text",
+      "name": "Title Map",
+      "text": "map",
+      "size": 44,
+      "fill": "#f8fafc",
+      "position": [1145, 118],
+      "keys": {
+        "opacity": [[0.25, 0], [0.85, 100], [6.5, 100], [7, 50]]
+      }
+    },
+    {
+      "type": "text",
+      "name": "Headline",
+      "text": "Passive income, compounding",
+      "size": 38,
+      "fill": "#f1f5f9",
+      "position": [960, 340],
+      "keys": {
+        "opacity": [[0.7, 0], [1.4, 100], [6.4, 100], [7, 55]],
+        "position": [[0.7, [960, 355]], [1.4, [960, 340]]]
+      }
+    },
+    {
+      "type": "text",
+      "name": "Subtitle",
+      "text": "Reinvested dividends buy more shares each quarter",
+      "size": 22,
+      "fill": "#94a3b8",
+      "position": [960, 395],
+      "keys": {
+        "opacity": [[0.9, 0], [1.6, 100], [6.4, 100], [7, 50]]
+      }
+    },
+    {
+      "type": "text",
+      "name": "Label",
+      "text": "REINVEST & COMPOUND",
+      "size": 16,
+      "fill": "#64748b",
+      "position": [960, 450],
+      "keys": {
+        "opacity": [[1.1, 0], [1.8, 100], [6.4, 100], [7, 45]]
+      }
+    },
+    {
+      "type": "text",
+      "name": "Big Number",
+      "text": "$8,603",
+      "size": 108,
+      "fill": "#ffffff",
+      "position": [960, 545],
+      "keys": {
+        "opacity": [[1.3, 0], [2.1, 100], [6.4, 100], [7, 60]],
+        "scale": [[1.3, 92], [2.2, 100]]
+      }
+    },
+    {
+      "type": "text",
+      "name": "Caption",
+      "text": "Illustrative growth of reinvested dividends",
+      "size": 16,
+      "fill": "#64748b",
+      "position": [960, 635],
+      "keys": {
+        "opacity": [[1.6, 0], [2.3, 100], [6.4, 100], [7, 40]]
+      }
+    },
+    {
+      "type": "shape",
+      "name": "Pill 1 Bg",
+      "kind": "rounded",
+      "size": [300, 44],
+      "fill": "#121a2b",
+      "stroke": "#1e2d45",
+      "strokeWidth": 1,
+      "position": [750, 820],
+      "keys": {
+        "opacity": [[2.2, 0], [3.0, 100], [6.4, 100], [7, 50]],
+        "scale": [[2.2, 90], [3.0, 100]]
+      }
+    },
+    {
+      "type": "text",
+      "name": "Pill1 Few",
+      "text": "few",
+      "size": 20,
+      "fill": "#e2e8f0",
+      "position": [655, 820],
+      "keys": {
+        "opacity": [[2.3, 0], [3.1, 100], [6.4, 100], [7, 50]]
+      }
+    },
+    {
+      "type": "text",
+      "name": "Pill1 More",
+      "text": "more",
+      "size": 20,
+      "fill": "#4ade80",
+      "position": [725, 820],
+      "keys": {
+        "opacity": [[2.35, 0], [3.15, 100], [6.4, 100], [7, 50]]
+      }
+    },
+    {
+      "type": "text",
+      "name": "Pill1 Shares",
+      "text": "shares,",
+      "size": 20,
+      "fill": "#e2e8f0",
+      "position": [820, 820],
+      "keys": {
+        "opacity": [[2.4, 0], [3.2, 100], [6.4, 100], [7, 50]]
+      }
+    },
+    {
+      "type": "shape",
+      "name": "Pill 2 Bg",
+      "kind": "rounded",
+      "size": [420, 44],
+      "fill": "#121a2b",
+      "stroke": "#1e2d45",
+      "strokeWidth": 1,
+      "position": [1160, 820],
+      "keys": {
+        "opacity": [[2.5, 0], [3.3, 100], [6.4, 100], [7, 50]],
+        "scale": [[2.5, 90], [3.3, 100]]
+      }
+    },
+    {
+      "type": "text",
+      "name": "Pill2 Text",
+      "text": "\"dividend\" → a counter climbing",
+      "size": 18,
+      "fill": "#cbd5e1",
+      "position": [1160, 820],
+      "keys": {
+        "opacity": [[2.6, 0], [3.4, 100], [6.4, 100], [7, 50]]
+      }
+    }
+  ]
+}

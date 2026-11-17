@@ -1,0 +1,218 @@
+{
+  "name": "Stardust Paradise",
+  "background": "#031820",
+  "width": 1280,
+  "height": 720,
+  "frameRate": 30,
+  "duration": 12,
+  "output": "stardust-paradise.mp4",
+  "layers": [
+    {
+      "type": "solid",
+      "name": "Ocean Night",
+      "color": "#031820",
+      "width": 1280,
+      "height": 720,
+      "position": [640, 360]
+    },
+    {
+      "type": "shape",
+      "name": "Soft Horizon",
+      "kind": "ellipse",
+      "size": [1200, 260],
+      "fill": "#0b4a5c",
+      "position": [640, 560],
+      "opacity": 45,
+      "keys": {
+        "opacity": [[0, 25], [1.5, 45], [11, 45], [12, 20]],
+        "scale": [[0, 95], [12, 108]]
+      },
+      "effect": {
+        "id": "blur",
+        "blurriness": 32
+      }
+    },
+    {
+      "type": "shape",
+      "name": "Title Underline",
+      "kind": "ellipse",
+      "size": [420, 10],
+      "fill": "#a5f3fc",
+      "position": [640, 278],
+      "keys": {
+        "scale": [[0.8, 15], [1.8, 105], [2.2, 100]],
+        "opacity": [[0.8, 0], [1.6, 100], [5.4, 100], [6.1, 0]]
+      },
+      "effect": {
+        "id": "glow",
+        "radius": 16,
+        "intensity": 1.15,
+        "threshold": 28
+      }
+    },
+    {
+      "type": "particle2d",
+      "name": "Raining Stardust",
+      "width": 1280,
+      "height": 720,
+      "position": [640, 360],
+      "birthRate": 1.5,
+      "life": 5.5,
+      "velocity": 0.55,
+      "gravity": 0.38,
+      "direction": 180,
+      "color": "#f8ffff",
+      "deathColor": "#7dd3fc",
+      "size": 0.7,
+      "deathSize": 0.22,
+      "maxOpacity": 72,
+      "producer": [0.5, 0.04],
+      "particle": {
+        "transferMode": "add",
+        "maxOpacity": 72,
+        "emitter": "2d"
+      },
+      "effect": {
+        "id": "particles2d",
+        "params": {
+          "physics/animation": 1,
+          "producer/radiusX": 620,
+          "producer/radiusY": 14,
+          "particle/sizeVariation": 30,
+          "physics/resistance": 0.18,
+          "particle/particleType": 2
+        },
+        "keys": {
+          "birthRate": [[0, 1.0], [2.5, 1.6], [9, 1.5], [11.5, 0.9]]
+        }
+      }
+    },
+    {
+      "type": "text",
+      "name": "Title",
+      "text": "ESCAPE TO PARADISE!",
+      "size": 68,
+      "fill": "#ffffff",
+      "position": [640, 220],
+      "keys": {
+        "scale": [[0.2, 88], [1.4, 100], [12, 102]],
+        "opacity": [[0.2, 0], [1.2, 100], [5.4, 100], [6.1, 0]]
+      },
+      "effect": {
+        "id": "glow",
+        "radius": 26,
+        "intensity": 1.2,
+        "threshold": 34
+      }
+    },
+    {
+      "type": "text",
+      "name": "Tagline",
+      "text": "Your Dream Vacation Awaits!",
+      "size": 34,
+      "fill": "#a5f3fc",
+      "position": [640, 320],
+      "keys": {
+        "position": [[0.8, [640, 340]], [1.7, [640, 320]]],
+        "opacity": [[0.8, 0], [1.7, 100], [5.4, 100], [6.1, 0]]
+      }
+    },
+    {
+      "type": "text",
+      "name": "Discover",
+      "text": "Beaches · Crystal waters · Adventures",
+      "size": 28,
+      "fill": "#ecfeff",
+      "position": [640, 300],
+      "keys": {
+        "opacity": [[5.6, 0], [6.4, 100], [8.6, 100], [9.3, 0]]
+      }
+    },
+    {
+      "type": "text",
+      "name": "Features",
+      "text": "White sand · Island adventures · Resorts",
+      "size": 28,
+      "fill": "#67e8f9",
+      "position": [640, 360],
+      "keys": {
+        "opacity": [[6.0, 0], [6.8, 100], [8.6, 100], [9.3, 0]]
+      },
+      "effect": {
+        "id": "glow",
+        "radius": 14,
+        "intensity": 1.05,
+        "threshold": 40
+      }
+    },
+    {
+      "type": "text",
+      "name": "CTA",
+      "text": "Pack your bags. Make memories.",
+      "size": 34,
+      "fill": "#ffffff",
+      "position": [640, 260],
+      "keys": {
+        "scale": [[8.9, 92], [9.7, 100]],
+        "opacity": [[8.9, 0], [9.7, 100], [11.4, 100], [12, 0]]
+      },
+      "effect": {
+        "id": "glow",
+        "radius": 20,
+        "intensity": 1.2,
+        "threshold": 35
+      }
+    },
+    {
+      "type": "text",
+      "name": "Destination",
+      "text": "Destination: Boracay, Philippines",
+      "size": 26,
+      "fill": "#a5f3fc",
+      "position": [640, 330],
+      "keys": {
+        "opacity": [[9.3, 0], [10.0, 100], [11.4, 100], [12, 0]]
+      }
+    },
+    {
+      "type": "text",
+      "name": "Book",
+      "text": "Explore more · Book your dream vacation today!",
+      "size": 24,
+      "fill": "#7dd3fc",
+      "position": [640, 390],
+      "keys": {
+        "opacity": [[9.6, 0], [10.3, 100], [11.4, 100], [12, 0]]
+      },
+      "effect": {
+        "id": "glow",
+        "radius": 12,
+        "intensity": 1.1,
+        "threshold": 38
+      }
+    },
+    {
+      "type": "text",
+      "name": "Closer",
+      "text": "Adventure is calling. Will you answer?",
+      "size": 22,
+      "fill": "#ecfeff",
+      "position": [640, 450],
+      "keys": {
+        "opacity": [[10.0, 0], [10.7, 100], [11.4, 100], [12, 0]]
+      }
+    },
+    {
+      "type": "camera",
+      "name": "Main Cam",
+      "cameraType": "twoNode",
+      "preset": "50mm",
+      "position": [640, 360, -1500],
+      "poi": [640, 360, 0],
+      "move": [
+        [0, [640, 360, -1500]],
+        [12, [640, 345, -1360]]
+      ]
+    }
+  ]
+}

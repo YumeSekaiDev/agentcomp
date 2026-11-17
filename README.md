@@ -7,16 +7,15 @@ Standalone **headless** motion-graphics tool for AI agents. It drives EffectCraf
 ```bash
 cd "/run/media/yume/KINGSTON/Effect Craft/agent-compositor"
 
+# Warp Stabilizer + Particle Emitter 2D
+cargo run --release -- --input examples/stabilizer-particles.json -o stabilizer-particles.mp4
+
 # Particles + glow + stroked shapes + camera move
 cargo run --release -- --input examples/next-test.json -o next-test.mp4
 
-# Rich demo (text, shapes, footage + chroma, particles, 3D, camera, light)
+# Rich demo / Particle Emitter 3D / prompt title card
 cargo run --release -- --input examples/full-test.json -o full-test.mp4
-
-# Particle Emitter 3D demo
 cargo run --release -- --input examples/particles-test.json -o particles-test.mp4
-
-# Prompt → title card
 cargo run --release -- --prompt "Hello | Agent Motion" -o hello.mp4
 ```
 
@@ -53,8 +52,9 @@ Top-level (all optional unless noted):
 | `text` | `text`, `size` (pt), `fill` |
 | `solid` | `color`, `width`, `height` |
 | `shape` | `kind` (`rect`/`ellipse`/…), `size` `[w,h]`, `fill`, `stroke`, `strokeWidth` |
-| `footage` | `path` (image/video relative to CWD) |
-| `particle` | Particle Emitter 3D host solid + controls (below) |
+| `footage` | `path`, optional `sequence`, `footageFrameRate` |
+| `particle` | Particle Emitter 3D (or 2D with `"emitter": "2d"`) |
+| `particle2d` | Particle Emitter 2D host solid + controls |
 | `camera` | `cameraType`, `preset`, `zoom`, `poi`, `move` (position keyframes) |
 | `light` | `lightKind` (`Point`/`Spot`/`Parallel`/`Ambient`), `color`, `intensity`, `poi` |
 | `null` | null object |
@@ -109,6 +109,8 @@ Shortcuts → EffectCraft ids:
 | `hue` / `color` | `ec.color.huesaturation` |
 | `brightness` | `ec.color.brightnesscontrast` |
 | `particles3d` | `ec.sim.ccparticleworld` |
+| `particles2d` | `ec.sim.ccparticlesystems2` |
+| `stabilizer` | `ec.distort.warpstabilizer` (`smoothness`, `strength`, `method`, `analyze`) |
 
 Glow and blur apply to **any** layer via `effect` or `effects[]`. Key Light / chroma:
 
@@ -121,36 +123,60 @@ Glow and blur apply to **any** layer via `effect` or `effects[]`. Key Light / ch
 
 Convenience fields: `radius`, `intensity`, `threshold`, `blurriness`, `hue`, `saturation`, `brightness`, `contrast`, `keyColor`, `tolerance`, `softness`. Any other parameter goes in `params`.
 
-### Particle layers (`type: "particle"`)
+### Particle layers (`particle` / `particle2d`)
 
-Uses EffectCraft’s **Particle Emitter 3D** (`ec.sim.ccparticleworld`).
+- **3D** — `type: "particle"` → Particle Emitter 3D (`ec.sim.ccparticleworld`)
+- **2D** — `type: "particle2d"` or `"emitter": "2d"` → Particle Emitter 2D (`ec.sim.ccparticlesystems2`)
 
 ```json
 {
-  "type": "particle",
-  "birthRate": 4,
-  "life": 2,
-  "velocity": 2.5,
-  "gravity": 0.8,
-  "color": "#ffcc33",
-  "deathColor": "#ff3300",
-  "size": 0.4,
-  "deathSize": 0.05,
-  "producer": [0, 0.3, 0],
-  "particle": { "transferMode": "add", "maxOpacity": 90 }
+  "type": "particle2d",
+  "birthRate": 5,
+  "life": 1.4,
+  "velocity": 3.5,
+  "gravity": 1.2,
+  "direction": -90,
+  "color": "#fde047",
+  "producer": [0.5, 0.85],
+  "particle": { "transferMode": "add" }
 }
 ```
 
-| Friendly field | Effect param |
+| Friendly field | 3D param | 2D param |
+|---|---|---|
+| `birthRate` | `birthRate` | same |
+| `life` | `longevity` | same |
+| `velocity` / `gravity` | `physics/velocity` / `gravity` | same |
+| `direction` | — | `physics/direction` (degrees) |
+| `color` / `deathColor` | `particle/birthColor` / `deathColor` | same |
+| `size` / `deathSize` | `particle/birthSize` / `deathSize` | same |
+| `producer` | `producer/producerX|Y|Z` (world) | `producer/position` (0…1) |
+
+### Warp Stabilizer
+
+Apply on a **footage** layer (still or sequence). The tool runs `warp.analyze` when `analyze` is true (default).
+
+```json
+{
+  "type": "footage",
+  "path": "examples/media/shake/f_000.png",
+  "sequence": true,
+  "footageFrameRate": 12,
+  "effect": {
+    "id": "stabilizer",
+    "smoothness": 80,
+    "strength": 70,
+    "method": "subspace",
+    "analyze": true
+  }
+}
+```
+
+| Field | Maps to |
 |---|---|
-| `birthRate` | `birthRate` |
-| `life` / `longevity` | `longevity` |
-| `velocity` | `physics/velocity` |
-| `gravity` | `physics/gravity` |
-| `color` | `particle/birthColor` |
-| `deathColor` | `particle/deathColor` |
-| `size` / `deathSize` | `particle/birthSize` / `deathSize` |
-| `producer` `[x,y,z]` | `producer/producerX|Y|Z` (world units) |
+| `smoothness` | `stabilization/smoothness` |
+| `strength` | `advanced/cropLessSmoothMore` |
+| `method` | `stabilization/method` (`position` / `positionScaleRotation` / `perspective` / `subspace`) |
 
 ## What the binary does
 

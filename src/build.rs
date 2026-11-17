@@ -5,7 +5,8 @@ use std::path::{Path, PathBuf};
 use serde_json::{Value, json};
 
 use crate::effects::{
-    effect_params, is_particle_effect, merge_params, particle_params, resolve_effect_id,
+    effect_params, is_particle_effect, is_warp_stabilizer, merge_params, particle_params,
+    resolve_effect_id,
 };
 use crate::scene::{EffectSpec, KeyFrame, LayerSpec, Scene, parse_key_list};
 
@@ -92,10 +93,10 @@ fn create_layer(
                 }),
             )?
         }
-        "solid" | "particle" => {
+        "solid" | "particle" | "particle2d" => {
             let w = layer.width.unwrap_or(scene.width);
             let h = layer.height.unwrap_or(scene.height);
-            let color = if layer.layer_type.eq_ignore_ascii_case("particle") {
+            let color = if layer.is_particle_host() {
                 layer.color.as_deref().unwrap_or("#000000")
             } else {
                 layer
@@ -145,7 +146,10 @@ fn create_layer(
             let imported = exec(
                 session,
                 "file.import",
-                json!({ "paths": [path.to_string_lossy()], "sequence": false }),
+                json!({
+                    "paths": [path.to_string_lossy()],
+                    "sequence": layer.sequence,
+                }),
             )?;
             let item = imported
                 .get("items")
@@ -153,6 +157,13 @@ fn create_layer(
                 .and_then(|a| a.first())
                 .cloned()
                 .ok_or_else(|| format!("layers[{index}]: file.import returned no items"))?;
+            if let Some(fps) = layer.footage_frame_rate {
+                let _ = exec(
+                    session,
+                    "file.interpretFootage",
+                    json!({ "items": [item.clone()], "frameRate": fps }),
+                );
+            }
             let added = exec(
                 session,
                 "layer.addItem",
@@ -216,7 +227,7 @@ fn create_layer(
     // Solids / particles / nulls are created without a position; place them explicitly.
     if matches!(
         layer.layer_type.to_ascii_lowercase().as_str(),
-        "solid" | "particle" | "null"
+        "solid" | "particle" | "particle2d" | "null"
     ) {
         exec(
             session,
@@ -354,9 +365,7 @@ fn apply_effect(
     )?;
 
     let mut params = effect_params(effect);
-    if is_particle_effect(effect_id)
-        || layer_spec.layer_type.eq_ignore_ascii_case("particle")
-    {
+    if is_particle_effect(effect_id) || layer_spec.is_particle_host() {
         params = merge_params(particle_params(layer_spec), params);
     }
 
@@ -382,6 +391,30 @@ fn apply_effect(
             &keys,
             KeyKind::Raw,
         )?;
+    }
+
+    // Warp Stabilizer needs an analysis pass before it changes frames.
+    if is_warp_stabilizer(effect_id) && effect.analyze.unwrap_or(true) {
+        let status = exec(
+            session,
+            "warp.analyze",
+            json!({
+                "layer": layer,
+                "effect": slot,
+                "wait": true,
+            }),
+        )?;
+        if status.get("analyzed") == Some(&json!(false)) {
+            // Some builds only report analyzed via warp.status after wait.
+            let check = exec(
+                session,
+                "warp.status",
+                json!({ "layer": layer, "effect": slot }),
+            )?;
+            if check.get("analyzed") != Some(&json!(true)) {
+                eprintln!("warning: Warp Stabilizer analysis may be incomplete: {check}");
+            }
+        }
     }
 
     Ok(())

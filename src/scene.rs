@@ -51,7 +51,7 @@ impl Default for Scene {
 #[derive(Debug, Clone, Deserialize, Default)]
 #[serde(rename_all = "camelCase", default)]
 pub struct LayerSpec {
-    /// `text` | `solid` | `shape` | `footage` | `particle` | `camera` | `light` | `null`
+    /// `text` | `solid` | `shape` | `footage` | `particle` | `particle2d` | `camera` | `light` | `null`
     #[serde(rename = "type")]
     pub layer_type: String,
     pub name: Option<String>,
@@ -69,8 +69,12 @@ pub struct LayerSpec {
     /// Shape kind: `rect`, `rounded`, `ellipse`, `polygon`, `star`.
     pub kind: Option<String>,
     pub shape_size: Option<[f64; 2]>,
-    /// Footage file path (relative to CWD or absolute).
+    /// Footage file path (relative to CWD or absolute). For a sequence, point at the first frame.
     pub path: Option<String>,
+    /// Import `path` as an image sequence (`file.import` with `sequence: true`).
+    pub sequence: bool,
+    /// Override interpreted frame rate after import (sequences).
+    pub footage_frame_rate: Option<f64>,
     pub position: Option<[f64; 3]>,
     /// Point of interest for cameras / lights `[x,y,z]`.
     pub poi: Option<[f64; 3]>,
@@ -103,6 +107,10 @@ pub struct LayerSpec {
     pub producer: Option<[f64; 3]>,
     /// Nested particle block (same fields as the shortcuts above).
     pub particle: Option<ParticleSpec>,
+    /// `2d` | `3d` — selects Particle Emitter 2D vs 3D when `type` is `particle`.
+    pub emitter: Option<String>,
+    /// 2D emitter direction in degrees (Particle Emitter 2D `physics/direction`).
+    pub direction: Option<f64>,
     pub keys: LayerKeys,
     /// Single effect (shorthand).
     pub effect: Option<EffectSpec>,
@@ -126,6 +134,10 @@ pub struct ParticleSpec {
     pub producer: Option<[f64; 3]>,
     /// Transfer mode: `composite` | `screen` | `add` | `blackMatte`.
     pub transfer_mode: Option<String>,
+    /// Force `2d` or `3d` emitter when nested under a particle layer.
+    pub emitter: Option<String>,
+    /// 2D direction angle (degrees).
+    pub direction: Option<f64>,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -150,7 +162,7 @@ pub struct KeyFrame {
 #[derive(Debug, Clone, Deserialize, Default)]
 #[serde(rename_all = "camelCase", default)]
 pub struct EffectSpec {
-    /// Short name (`glow`, `blur`, `hue`, `chroma`, `particles3d`, …) or full `ec.*` id.
+    /// Short name (`glow`, `blur`, `hue`, `chroma`, `particles3d`, `stabilizer`, …) or full `ec.*` id.
     pub id: String,
     pub blurriness: Option<f64>,
     pub radius: Option<f64>,
@@ -164,6 +176,14 @@ pub struct EffectSpec {
     pub key_color: Option<String>,
     pub tolerance: Option<f64>,
     pub softness: Option<f64>,
+    /// Warp Stabilizer smoothness (0…1000; AE default 50).
+    pub smoothness: Option<f64>,
+    /// Warp Stabilizer "Crop Less ↔ Smooth More" (0…100). Higher favours smoothness.
+    pub strength: Option<f64>,
+    /// Warp Stabilizer method: `position` | `positionScaleRotation` | `perspective` | `subspace`.
+    pub method: Option<String>,
+    /// After applying Warp Stabilizer, run `warp.analyze` (default true for that effect).
+    pub analyze: Option<bool>,
     /// Free-form EffectCraft parameter map (overrides convenience fields on conflict).
     #[serde(default)]
     pub params: Map<String, Value>,
@@ -209,15 +229,39 @@ impl LayerSpec {
         self.position.unwrap_or([cx, cy, 0.0])
     }
 
+    pub fn wants_particle_2d(&self) -> bool {
+        if self.layer_type.eq_ignore_ascii_case("particle2d") {
+            return true;
+        }
+        let emitter = self
+            .emitter
+            .as_deref()
+            .or(self.particle.as_ref().and_then(|p| p.emitter.as_deref()))
+            .unwrap_or("");
+        emitter.eq_ignore_ascii_case("2d")
+            || emitter.eq_ignore_ascii_case("particle2d")
+            || emitter.eq_ignore_ascii_case("systems2")
+    }
+
+    pub fn is_particle_host(&self) -> bool {
+        let t = self.layer_type.to_ascii_lowercase();
+        t == "particle" || t == "particle2d"
+    }
+
     pub fn all_effects(&self) -> Vec<EffectSpec> {
         let mut out = Vec::new();
         if let Some(e) = &self.effect {
             out.push(e.clone());
         }
         out.extend(self.effects.clone());
-        if self.layer_type.eq_ignore_ascii_case("particle") && out.is_empty() {
+        if self.is_particle_host() && out.is_empty() {
+            let id = if self.wants_particle_2d() {
+                "particles2d"
+            } else {
+                "particles3d"
+            };
             out.push(EffectSpec {
-                id: "particles3d".into(),
+                id: id.into(),
                 ..Default::default()
             });
         }
@@ -287,11 +331,11 @@ impl Scene {
         }
         for (i, layer) in self.layers.iter().enumerate() {
             match layer.layer_type.to_ascii_lowercase().as_str() {
-                "text" | "solid" | "shape" | "footage" | "particle" | "camera" | "light"
-                | "null" => {}
+                "text" | "solid" | "shape" | "footage" | "particle" | "particle2d" | "camera"
+                | "light" | "null" => {}
                 other => {
                     return Err(format!(
-                        "layers[{i}]: unknown type `{other}` (expected text|solid|shape|footage|particle|camera|light|null)"
+                        "layers[{i}]: unknown type `{other}` (expected text|solid|shape|footage|particle|particle2d|camera|light|null)"
                     ));
                 }
             }

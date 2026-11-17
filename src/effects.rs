@@ -22,8 +22,10 @@ pub fn resolve_effect_id(id: &str) -> &str {
         "screenkey" | "keylight" | "key light" | "key_light" | "screen" => "ec.key.screen",
         "particles" | "particles3d" | "particle" | "particleworld" | "particle emitter 3d"
         | "ccparticleworld" => "ec.sim.ccparticleworld",
-        "particles2d" | "particlesystems2" | "particle emitter 2d" => {
-            "ec.sim.ccparticlesystems2"
+        "particles2d" | "particle2d" | "particlesystems2" | "particle emitter 2d"
+        | "ccparticlesystems2" => "ec.sim.ccparticlesystems2",
+        "stabilizer" | "warpstabilizer" | "warp stabilizer" | "warp" => {
+            "ec.distort.warpstabilizer"
         }
         _ => id,
     }
@@ -72,7 +74,6 @@ pub fn effect_params(effect: &EffectSpec) -> Map<String, Value> {
         if id == "ec.key.colorkey" {
             params.insert("colorTolerance".into(), json!(v));
         } else if id == "ec.key.screen" {
-            // Map generic tolerance onto Screen Gain for Key Light / Screen Key.
             params.insert("screenGain".into(), json!(v));
         } else {
             params.insert("tolerance".into(), json!(v));
@@ -86,15 +87,36 @@ pub fn effect_params(effect: &EffectSpec) -> Map<String, Value> {
         }
     }
 
+    if id == "ec.distort.warpstabilizer" {
+        if let Some(v) = effect.smoothness {
+            params.insert("stabilization/smoothness".into(), json!(v));
+        }
+        if let Some(v) = effect.strength {
+            // Crop Less ↔ Smooth More: higher values favour smoother motion.
+            params.insert("advanced/cropLessSmoothMore".into(), json!(v));
+        }
+        if let Some(method) = &effect.method {
+            let idx = match method.trim().to_ascii_lowercase().as_str() {
+                "position" | "0" => 0,
+                "positionscalerotation" | "position, scale, rotation" | "psr" | "1" => 1,
+                "perspective" | "2" => 2,
+                "subspace" | "subspace warp" | "3" => 3,
+                _ => 3,
+            };
+            params.insert("stabilization/method".into(), json!(idx));
+        }
+    }
+
     for (k, v) in &effect.params {
         params.insert(k.clone(), v.clone());
     }
     params
 }
 
-/// Map friendly particle fields onto Particle Emitter 3D parameter paths.
+/// Map friendly particle fields onto Particle Emitter 2D or 3D parameter paths.
 pub fn particle_params(layer: &LayerSpec) -> Map<String, Value> {
     let nested = layer.particle.clone().unwrap_or_default();
+    let is_2d = layer.wants_particle_2d();
     let mut params = Map::new();
 
     set_num(
@@ -139,7 +161,7 @@ pub fn particle_params(layer: &LayerSpec) -> Map<String, Value> {
             .size
             .as_ref()
             .and_then(Value::as_f64)
-            .filter(|n| *n > 0.0 && *n <= 10.0)
+            .filter(|n| *n > 0.0 && *n <= 20.0)
     });
     set_num(&mut params, "particle/birthSize", birth_size);
     set_num(
@@ -154,9 +176,27 @@ pub fn particle_params(layer: &LayerSpec) -> Map<String, Value> {
     );
 
     if let Some([x, y, z]) = layer.producer.or(nested.producer) {
-        params.insert("producer/producerX".into(), json!(x));
-        params.insert("producer/producerY".into(), json!(y));
-        params.insert("producer/producerZ".into(), json!(z));
+        if is_2d {
+            // Particle Emitter 2D Point params are stored in layer pixels
+            // (EffectCraft scales default 0…1 points by layer size on apply).
+            let w = layer.width.unwrap_or(1280) as f64;
+            let h = layer.height.unwrap_or(720) as f64;
+            let (px, py) = if x.abs() <= 1.5 && y.abs() <= 1.5 {
+                (x * w, y * h)
+            } else {
+                (x, y)
+            };
+            params.insert("producer/position".into(), json!([px, py]));
+        } else {
+            params.insert("producer/producerX".into(), json!(x));
+            params.insert("producer/producerY".into(), json!(y));
+            params.insert("producer/producerZ".into(), json!(z));
+        }
+    }
+
+    let direction = layer.direction.or(nested.direction);
+    if is_2d {
+        set_num(&mut params, "physics/direction", direction);
     }
 
     if let Some(mode) = nested.transfer_mode.as_deref() {
@@ -169,18 +209,22 @@ pub fn particle_params(layer: &LayerSpec) -> Map<String, Value> {
         params.insert("particle/transferMode".into(), json!(idx));
     }
 
-    // Sensible defaults for a visible emitter on a dark plate when the scene is sparse.
     if !params.contains_key("birthRate") {
-        params.insert("birthRate".into(), json!(3.0));
+        params.insert("birthRate".into(), json!(if is_2d { 4.0 } else { 3.0 }));
     }
     if !params.contains_key("longevity") {
         params.insert("longevity".into(), json!(2.0));
     }
     if !params.contains_key("physics/velocity") {
-        params.insert("physics/velocity".into(), json!(2.0));
+        params.insert("physics/velocity".into(), json!(if is_2d { 3.0 } else { 2.0 }));
     }
     if !params.contains_key("particle/transferMode") {
         params.insert("particle/transferMode".into(), json!(2)); // Add
+    }
+    if is_2d && !params.contains_key("producer/position") {
+        let w = layer.width.unwrap_or(1280) as f64;
+        let h = layer.height.unwrap_or(720) as f64;
+        params.insert("producer/position".into(), json!([0.5 * w, 0.75 * h]));
     }
 
     params
@@ -207,4 +251,6 @@ pub fn is_particle_effect(id: &str) -> bool {
     )
 }
 
-
+pub fn is_warp_stabilizer(id: &str) -> bool {
+    resolve_effect_id(id) == "ec.distort.warpstabilizer"
+}
