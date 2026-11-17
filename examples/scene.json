@@ -1,0 +1,13 @@
+{
+  "title": "Hello from JSON",
+  "background": "#1a1028",
+  "fill": "#f0e6ff",
+  "fontSize": 88,
+  "width": 1280,
+  "height": 720,
+  "frameRate": 30,
+  "duration": 4,
+  "fade": true,
+  "fadeIn": 0.75,
+  "fadeOut": 0.75
+}

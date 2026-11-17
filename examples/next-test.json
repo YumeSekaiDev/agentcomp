@@ -1,0 +1,117 @@
+{
+  "name": "Next Test",
+  "background": "#080812",
+  "width": 1280,
+  "height": 720,
+  "frameRate": 30,
+  "duration": 4,
+  "output": "next-test.mp4",
+  "layers": [
+    {
+      "type": "solid",
+      "name": "Plate",
+      "color": "#080812",
+      "width": 1280,
+      "height": 720,
+      "position": [640, 360]
+    },
+    {
+      "type": "shape",
+      "name": "Frame",
+      "kind": "rect",
+      "size": [720, 420],
+      "fill": "#12122a",
+      "stroke": "#a78bfa",
+      "strokeWidth": 8,
+      "position": [640, 360],
+      "keys": {
+        "scale": [[0, 85], [1.2, 100]],
+        "opacity": [[0, 0], [0.5, 100]]
+      },
+      "effect": {
+        "id": "glow",
+        "radius": 22,
+        "intensity": 1.15,
+        "threshold": 30
+      }
+    },
+    {
+      "type": "shape",
+      "name": "Orb",
+      "kind": "ellipse",
+      "size": [160, 160],
+      "fill": "#38bdf8",
+      "stroke": "#e0f2fe",
+      "strokeWidth": 5,
+      "position": [640, 360],
+      "keys": {
+        "scale": [[0, 40], [1, 110], [1.4, 100]],
+        "opacity": [[0, 0], [0.4, 100], [3.4, 100], [4, 40]]
+      },
+      "effects": [
+        {
+          "id": "glow",
+          "radius": 36,
+          "intensity": 1.4,
+          "threshold": 25
+        },
+        {
+          "id": "blur",
+          "blurriness": 2
+        }
+      ]
+    },
+    {
+      "type": "particle",
+      "name": "Sparks",
+      "width": 1280,
+      "height": 720,
+      "position": [640, 360],
+      "birthRate": 4,
+      "life": 1.8,
+      "velocity": 2.4,
+      "gravity": 0.75,
+      "color": "#fde68a",
+      "deathColor": "#f97316",
+      "size": 0.38,
+      "deathSize": 0.05,
+      "producer": [0, 0.15, 0],
+      "particle": { "transferMode": "add", "maxOpacity": 90 },
+      "keys": {
+        "effects": {
+          "birthRate": [[0, 1.5], [1.5, 5], [3.5, 2]]
+        }
+      }
+    },
+    {
+      "type": "text",
+      "name": "Title",
+      "text": "NEXT",
+      "size": 96,
+      "fill": "#ffffff",
+      "position": [640, 250],
+      "keys": {
+        "opacity": [[0, 0], [0.6, 100], [3.3, 100], [4, 0]],
+        "scale": [[0, 80], [1, 100]]
+      },
+      "effect": {
+        "id": "glow",
+        "radius": 28,
+        "intensity": 1.2,
+        "threshold": 35
+      }
+    },
+    {
+      "type": "camera",
+      "name": "Cam",
+      "cameraType": "twoNode",
+      "preset": "50mm",
+      "position": [640, 360, -1500],
+      "poi": [640, 360, 0],
+      "move": [
+        [0, [640, 360, -1500]],
+        [4, [640, 340, -1280]]
+      ]
+    }
+  ]
+}

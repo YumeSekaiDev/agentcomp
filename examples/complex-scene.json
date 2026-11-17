@@ -1,0 +1,63 @@
+{
+  "name": "Complex Title Card",
+  "background": "#0a0614",
+  "width": 1280,
+  "height": 720,
+  "frameRate": 30,
+  "duration": 5,
+  "layers": [
+    {
+      "type": "solid",
+      "name": "Plate",
+      "color": "#140a22",
+      "width": 1280,
+      "height": 720,
+      "position": [640, 360],
+      "keys": {
+        "opacity": [[0, 100], [5, 85]]
+      }
+    },
+    {
+      "type": "shape",
+      "name": "Accent Bar",
+      "kind": "ellipse",
+      "size": [540, 14],
+      "fill": "#c084fc",
+      "position": [640, 418],
+      "keys": {
+        "scale": [[0, 20], [1.0, 110], [1.3, 100]],
+        "opacity": [[0, 0], [0.5, 100], [4.2, 100], [5, 0]]
+      }
+    },
+    {
+      "type": "text",
+      "name": "Title",
+      "text": "COMPLEX SCENE",
+      "size": 96,
+      "fill": "#ffffff",
+      "position": [640, 300],
+      "keys": {
+        "scale": [[0, 70], [1.2, 100], [5, 106]],
+        "opacity": [[0, 0], [0.6, 100], [4.3, 100], [5, 0]]
+      },
+      "effect": {
+        "id": "glow",
+        "radius": 28,
+        "intensity": 1.2,
+        "threshold": 35
+      }
+    },
+    {
+      "type": "text",
+      "name": "Subtitle",
+      "text": "Two texts · shape overlay · keyframes · glow",
+      "size": 34,
+      "fill": "#e9d8ff",
+      "position": [640, 454],
+      "keys": {
+        "position": [[0.6, [640, 474]], [1.4, [640, 454]]],
+        "opacity": [[0.6, 0], [1.4, 100], [4.2, 100], [5, 0]]
+      }
+    }
+  ]
+}

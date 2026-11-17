@@ -1,0 +1,36 @@
+[package]
+name = "agent-compositor"
+version = "0.1.0"
+edition = "2024"
+license = "MIT OR Apache-2.0"
+description = "Headless motion-graphics compositor for AI agents (JSON scenes → MP4 via EffectCraft)"
+publish = false
+
+[[bin]]
+name = "agent-compositor"
+path = "src/main.rs"
+
+[dependencies]
+# Wired Session: media, export (H.264 MP4), expressions, scripting, command registry.
+# Transitive stack for solid + text + keyframes + basic effects + MP4:
+#   L0  time, geom, color
+#   L1  raster, keyframe, path
+#   L2  project, text, effects
+#   L3  render, media, export  (+ expr via host)
+#   L4  engine, script
+#   L4  host (this crate)
+# Not required for this tool: ui-egui, automation, gpu, aep, lottie, pdf, psd, svg,
+# interchange, sam2, track, segment, model, plugin UI.
+effectcraft-host = { path = "../effectcraft/crates/host" }
+effectcraft-engine = { path = "../effectcraft/crates/engine" }
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["float_roundtrip"] }
+
+# Optional: pin EffectCraft from git instead of a local checkout:
+# effectcraft-host = { git = "https://github.com/storytold/effectcraft", rev = "60e2cbbbe3d73c0a9074c25a1a615ccfec18721c" }
+# effectcraft-engine = { git = "https://github.com/storytold/effectcraft", rev = "60e2cbbbe3d73c0a9074c25a1a615ccfec18721c" }
+
+# Same crates.io patches EffectCraft’s workspace root applies (craft-pdf needs a forked hayro).
+[patch.crates-io]
+hayro-syntax = { git = "https://github.com/storytold/craft-libs", rev = "808730f49b9637b7909fe2ae56f9d63fdb100cae", version = "=0.7.2" }
+hayro-jbig2 = { git = "https://github.com/storytold/craft-libs", rev = "808730f49b9637b7909fe2ae56f9d63fdb100cae", version = "=0.3.0" }

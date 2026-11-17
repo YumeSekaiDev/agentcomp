@@ -1,0 +1,61 @@
+{
+  "name": "Particles Test",
+  "background": "#050510",
+  "width": 1280,
+  "height": 720,
+  "frameRate": 30,
+  "duration": 4,
+  "output": "particles-test.mp4",
+  "layers": [
+    {
+      "type": "solid",
+      "name": "Night Sky",
+      "color": "#050510",
+      "width": 1280,
+      "height": 720,
+      "position": [640, 360]
+    },
+    {
+      "type": "text",
+      "name": "Caption",
+      "text": "Particle Emitter 3D",
+      "size": 48,
+      "fill": "#e8e8ff",
+      "position": [640, 120],
+      "keys": {
+        "opacity": [[0, 0], [0.6, 100], [3.2, 100], [4, 0]]
+      },
+      "effect": {
+        "id": "glow",
+        "radius": 18,
+        "intensity": 1.1,
+        "threshold": 40
+      }
+    },
+    {
+      "type": "particle",
+      "name": "Ember Fountain",
+      "width": 1280,
+      "height": 720,
+      "position": [640, 360],
+      "birthRate": 5,
+      "life": 2.2,
+      "velocity": 2.8,
+      "gravity": 0.9,
+      "color": "#ffcc44",
+      "deathColor": "#ff2200",
+      "size": 0.45,
+      "deathSize": 0.05,
+      "maxOpacity": 90,
+      "producer": [0, 0.35, 0],
+      "particle": {
+        "transferMode": "add"
+      },
+      "keys": {
+        "effects": {
+          "birthRate": [[0, 1.5], [1.5, 6], [3.5, 2]]
+        }
+      }
+    }
+  ]
+}
